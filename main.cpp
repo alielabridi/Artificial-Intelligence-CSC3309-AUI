@@ -3,6 +3,7 @@
 #include <string>
 
 #define VERBOSE 1
+
 using namespace std;
 int main(int argc, char *argv[]){
     if(argc != 5)
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]){
     int n_people;
     int n_nodes_to_expand;
     int depth_cutoff = 0;
-    
+
     if (!problemSpecification.is_open()) cout << "problem specification file not open" << endl;
 
     getline(problemSpecification, problem);
