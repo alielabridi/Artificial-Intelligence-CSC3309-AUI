@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+
+#define VERBOSE 1
 using namespace std;
 int main(int argc, char *argv[]){
     if(argc != 5)
@@ -29,6 +31,7 @@ int main(int argc, char *argv[]){
 
 
     if (!problemSpecification.is_open()) cout << "problem specification file not open" << endl;
+    
     getline(problemSpecification, problem);
     getline(problemSpecification,strategy);
 
@@ -47,13 +50,20 @@ int main(int argc, char *argv[]){
     if(strategy == "IDS " || strategy == "IDA" || strategy == "DLS")
         problemSpecification >> depth_cutoff;
 
+    if(VERBOSE){
+        cout << "Problem " << problem  << endl;
+        cout << "strategy " << strategy  << endl;
+        cout << "pegs_shape " << pegs_shape  << endl;
+        cout << "n_missionaries " << n_missionaries  << endl;
+        cout << "n_cannibals " << n_cannibals  << endl;
+        cout << "n_people " << n_people  << endl;
+        cout << "depth_costoff " << depth_cutoff  << endl;
+    }
     problemSpecification.close();
     /*end of inputting the problemSpec file*/
 
-    cout << "+" << problem << "+" << endl;
-    cout << "+" << strategy << "+" << endl;
-    cout << "+" << pegs_shape << "+" << endl;
-    cout << "+" << n_nodes_to_expand << "+" << endl;
+
+
 
 /*    initialStateFile.close();
     goalStateFile.close();

@@ -43,8 +43,8 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="49">
-              <caret line="47" column="45" selection-start-line="47" selection-start-column="45" selection-end-line="47" selection-end-column="45" />
+            <state relative-caret-position="311">
+              <caret line="33" column="4" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -301,7 +301,7 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="false" name="Artificial_Intelligence_CSC3309_AUI" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="Pegs.txt t t t" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Artificial_Intelligence_CSC3309_AUI" TARGET_NAME="Artificial_Intelligence_CSC3309_AUI" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Artificial_Intelligence_CSC3309_AUI" RUN_TARGET_NAME="Artificial_Intelligence_CSC3309_AUI">
+    <configuration default="false" name="Artificial_Intelligence_CSC3309_AUI" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="MCP.txt t t t" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Artificial_Intelligence_CSC3309_AUI" TARGET_NAME="Artificial_Intelligence_CSC3309_AUI" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Artificial_Intelligence_CSC3309_AUI" RUN_TARGET_NAME="Artificial_Intelligence_CSC3309_AUI">
       <envs />
       <method />
     </configuration>
@@ -320,12 +320,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1477750226863</updated>
-      <workItem from="1477750228129" duration="6763000" />
+      <workItem from="1477750228129" duration="7657000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6763000" />
+    <option name="totallyTimeSpent" value="7657000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -395,8 +395,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="49">
-          <caret line="47" column="45" selection-start-line="47" selection-start-column="45" selection-end-line="47" selection-end-column="45" />
+        <state relative-caret-position="311">
+          <caret line="33" column="4" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
