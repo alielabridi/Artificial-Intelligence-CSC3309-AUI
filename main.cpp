@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
     getline(problemSpecification,strategy);
 
     //look for the depth cutoff in case of IDA DLS IDS
-    if(strategy == "IDS " || strategy == "IDA" || strategy == "DLS")
+    if(strategy == "DLS")
         problemSpecification >> depth_cutoff;
 
     if(problem == "Pegs")//for the pegs
