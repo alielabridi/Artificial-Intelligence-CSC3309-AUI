@@ -8,18 +8,16 @@ int main(int argc, char *argv[]){
     if(argc != 5)
         return 0;
 
+    /*inputting the problemSpec*/
     /* Problem Specification File content
      * 1. problem
      * 2. strategy used
      * 3. modification (1-6 pegs board) or (#M #C #P)
      * 4. #of node to extend before asking if to continue
+     * 5. depth cutoff
      */
     ifstream problemSpecification(argv[1]); //problemSpec.txt
-/*    ifstream heuristicFile(argv[1]); //heuristic.txt
-    ifstream goalStateFile(argv[2]); // goalState.txt
-    ifstream initialStateFile(argv[3]); //initialState.txt*/
 
-    /*inputting the problemSpec*/
     string problem;
     string strategy;
     int pegs_shape;
@@ -28,10 +26,9 @@ int main(int argc, char *argv[]){
     int n_people;
     int n_nodes_to_expand;
     int depth_cutoff = 0;
-
-
-    if (!problemSpecification.is_open()) cout << "problem specification file not open" << endl;
     
+    if (!problemSpecification.is_open()) cout << "problem specification file not open" << endl;
+
     getline(problemSpecification, problem);
     getline(problemSpecification,strategy);
 
