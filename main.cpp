@@ -24,27 +24,26 @@ int main(int argc, char *argv[]){
     int pegs_shape;
     int n_missionaries;
     int n_cannibals;
-    int n_people;
+    int boatCapacity;
     int n_nodes_to_expand;
     int depth_cutoff = 0;
-
+    int n_pairs_MCP;
     if (!problemSpecification.is_open()) cout << "problem specification file not open" << endl;
 
     getline(problemSpecification, problem);
     getline(problemSpecification,strategy);
 
-    //look for the depth cutoff in case of IDA DLS IDS
-    if(strategy == "DLS")
-        problemSpecification >> depth_cutoff;
+    problemSpecification >> depth_cutoff;
 
     if(problem == "Pegs")//for the pegs
         problemSpecification >> pegs_shape;
 
         //MCP
     else if(problem == "MCP"){
-        problemSpecification >> n_missionaries;
-        n_cannibals = n_missionaries;
-        problemSpecification >> n_people;
+        problemSpecification >> n_pairs_MCP;
+        n_cannibals = n_missionaries = n_pairs_MCP;
+
+        problemSpecification >> boatCapacity;
     }
     problemSpecification >> n_nodes_to_expand;
 
@@ -53,9 +52,10 @@ int main(int argc, char *argv[]){
         cout << "Problem " << problem  << endl;
         cout << "strategy " << strategy  << endl;
         cout << "pegs_shape " << pegs_shape  << endl;
+        cout << "n_pairs_MCP " << n_pairs_MCP  << endl;
         cout << "n_missionaries " << n_missionaries  << endl;
         cout << "n_cannibals " << n_cannibals  << endl;
-        cout << "n_people " << n_people  << endl;
+        cout << "boatCapacity " << boatCapacity  << endl;
         cout << "depth_costoff " << depth_cutoff  << endl;
     }
     problemSpecification.close();
