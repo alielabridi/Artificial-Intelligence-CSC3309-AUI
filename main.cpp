@@ -5,6 +5,28 @@
 #define VERBOSE 1
 
 using namespace std;
+
+/*Node object representation*/
+class NodePegs4: public Node{
+public:
+    string problem;
+    char state[7][7];
+
+    NodePegs4(string problem_, char state_[7][7]){
+        problem = problem_;
+        /*copy matrix*/
+        for (int i = 0; i < 7; ++i) {
+            for (int j = 0; j < 7 ; ++j) {
+                state[i][j] = state_[i][j];
+            }
+        }
+    }
+
+
+};
+class Node{
+    /*prev next */
+};
 int main(int argc, char *argv[]){
     if(argc != 5)
         return 0;
