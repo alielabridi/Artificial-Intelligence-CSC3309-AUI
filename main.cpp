@@ -9,15 +9,8 @@ int main(int argc, char *argv[]){
     if(argc != 5)
         return 0;
 
-    /*inputting the problemSpec*/
-    /* Problem Specification File content
-     * 1. problem
-     * 2. strategy used
-     * 3. modification (1-6 pegs board) or (#M #C #P)
-     * 4. #of node to extend before asking if to continue
-     * 5. depth cutoff
-     */
-    ifstream problemSpecification(argv[1]); //problemSpec.txt
+    char initialStatePegs4[7][7];
+    char goalStatePegs4[7][7];
 
     string problem;
     string strategy;
@@ -28,6 +21,10 @@ int main(int argc, char *argv[]){
     int n_nodes_to_expand;
     int depth_cutoff = 0;
     int n_pairs_MCP;
+
+    /*inputting the problemSpec*/
+    ifstream problemSpecification(string(argv[1])+".txt"); //problemSpec.txt
+
     if (!problemSpecification.is_open()) cout << "problem specification file not open" << endl;
 
     getline(problemSpecification, problem);
@@ -61,6 +58,52 @@ int main(int argc, char *argv[]){
     problemSpecification.close();
     /*end of inputting the problemSpec file*/
 
+
+    if(problem == "Pegs" && pegs_shape == 4){
+        /*inputting the initialstate*/
+        ifstream initialStateStream(string(argv[2])+".txt"); //InitialStatePegs4.txt
+        if(!initialStateStream.is_open()){cout << "could not open initial state file"; return 0;}
+        for (int i = 0; i < 7 ; ++i) {
+            for (int j = 0; j < 7 ; ++j) {
+                initialStateStream >> initialStatePegs4[i][j];
+
+            }
+        }
+        initialStateStream.close();
+
+        /*inputting the goal state*/
+        ifstream goalStateStream(string(argv[3])+".txt"); //GoalStatePegs4.txt
+        if(!goalStateStream.is_open()){cout << "could not open goal state file"; return 0;}
+        for (int i = 0; i < 7 ; ++i) {
+            for (int j = 0; j < 7 ; ++j) {
+                goalStateStream >> goalStatePegs4[i][j];
+
+            }
+        }
+        goalStateStream.close();
+
+        if(VERBOSE){
+            /*print the content of the goal state and initial state*/
+            cout << "Content of the initialState pegs 4" << endl;
+            for (int i = 0; i < 7 ; ++i) {
+                for (int j = 0; j < 7 ; ++j) {
+                    cout << initialStatePegs4[i][j] << " ";
+
+                }
+                cout << endl;
+            }
+            cout << "Content of the goalState pegs 4" << endl;
+            for (int i = 0; i < 7 ; ++i) {
+                for (int j = 0; j < 7 ; ++j) {
+                    cout << goalStatePegs4[i][j] << " ";
+
+                }
+                cout << endl;
+            }
+
+        }
+
+    }
 
 
 
