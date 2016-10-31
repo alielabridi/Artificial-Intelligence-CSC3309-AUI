@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <stack>
 
 #define VERBOSE 1
 
@@ -132,7 +133,7 @@ public:
 
 class searchEngine {
 public:
-    void BST(NodePegs4 initialState) {
+    void BFS(NodePegs4 initialState) {
         if (initialState.goalStateTest()) {
             cout << "solution found";
             return;
@@ -143,6 +144,39 @@ public:
         ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
         while (!frontier.empty()) {
             node = frontier.front();
+            node.printState();
+            if(node.goalStateTest()){
+                cout << "solution found" << endl;
+                return;
+            }
+            frontier.pop();
+            exploredSetBFS.add(node);
+            vector <NodePegs4> successors(node.successorFunction());
+            for (NodePegs4 successor: successors) {
+                /*check that the sucessor is not in the frontier and explored set*/
+                if(!exploredSetBFS.exists(successor))
+                    frontier.push(successor);
+            }
+
+        }
+        cout << "failure to find the solution" << endl;
+        return;
+    }
+
+
+
+
+    void DFS(NodePegs4 initialState) {
+        if (initialState.goalStateTest()) {
+            cout << "solution found";
+            return;
+        }
+        stack <NodePegs4> frontier;
+        NodePegs4 node;
+        frontier.push(initialState);
+        ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
+        while (!frontier.empty()) {
+            node = frontier.top();
             node.printState();
             if(node.goalStateTest()){
                 cout << "solution found" << endl;
@@ -276,7 +310,7 @@ int main(int argc, char *argv[]) {
     cout << endl << endl<< endl << endl << "--------------------------------------------" << endl << endl << "    START OF SEARCH"<< endl;
     searchEngine search;
     NodePegs4 initialNode(initialStatePegs4);
-    search.BST(initialNode);
+    search.DFS(initialNode);
 
 
 
