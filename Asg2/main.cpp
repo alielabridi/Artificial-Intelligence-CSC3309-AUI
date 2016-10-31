@@ -10,6 +10,7 @@ using namespace std;
 /*declare goal state global as to be accesible to everyone*/
 char goalStatePegs4[7][7];
 
+
 class Node {
     /*prev next */
 public:
@@ -33,6 +34,15 @@ public:
         }
     }
 
+    bool equals(NodePegs4 node){
+        for (int i = 0; i < 7; ++i) {
+            for (int j = 0; j < 7; ++j) {
+                if (node.state[i][j] != state[i][j])
+                    return false;
+            }
+        }
+        return true;
+    }
     void printState() {
         cout << "---------START--------" << endl;
         for (int i = 0; i < 7; ++i) {
@@ -107,6 +117,19 @@ public:
 
 };
 
+class ExploredSet{
+public:
+    vector<NodePegs4> Vec;
+    void add(NodePegs4 node){Vec.push_back(node);}
+    bool exists(NodePegs4 node){
+        for(NodePegs4 V : Vec){
+            if(V.equals(node))
+                return true;
+        }
+        return false;
+    }
+};
+
 class searchEngine {
 public:
     void BST(NodePegs4 initialState) {
@@ -117,43 +140,25 @@ public:
         queue <NodePegs4> frontier;
         NodePegs4 node;
         frontier.push(initialState);
-        vector <NodePegs4> explored;/*to be later transofrmed to a hashtable*/
+        ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
         while (!frontier.empty()) {
             node = frontier.front();
-            frontier.pop();
-            if (node.goalStateTest()) {
-                cout << "solution found2";
+            node.printState();
+            if(node.goalStateTest()){
+                cout << "solution found" << endl;
                 return;
             }
-            cout << "node: " << &node << endl;
-            node.printState();
-            explored.push_back(node);
+            frontier.pop();
+            exploredSetBFS.add(node);
             vector <NodePegs4> successors(node.successorFunction());
             for (NodePegs4 successor: successors) {
-                cout << "trying a new successor" << endl;
                 /*check that the sucessor is not in the frontier and explored set*/
-                successor.printState();
-                if (successor.goalStateTest()) {
-                    cout << "found solution 1";
-                    return;
-                }
-                vector <NodePegs4> children(successor.successorFunction());
-                cout << "the children are:" << endl;
-
-                for (NodePegs4 child: children){
-                    cout << "new child pushed" << endl;
-                    frontier.push(child);
-                    child.printState();
-
-                }
-                cout << "end children" <<endl;
-
-                cout << "size of frontier " << frontier.size() << endl;
+                if(!exploredSetBFS.exists(successor))
+                    frontier.push(successor);
             }
-            cout << "is the frontier empty " << frontier.empty()<< endl;
 
         }
-        cout << "failure";
+        cout << "failure to find the solution" << endl;
         return;
     }
 };
@@ -267,6 +272,8 @@ int main(int argc, char *argv[]) {
 
     }
 
+
+    cout << endl << endl<< endl << endl << "--------------------------------------------" << endl << endl << "    START OF SEARCH"<< endl;
     searchEngine search;
     NodePegs4 initialNode(initialStatePegs4);
     search.BST(initialNode);
