@@ -83,40 +83,43 @@ public:
 
                     /*check possibility to move blank down*/
                     if ((i + 2 <= 7) && state[i + 1][j] == '1' && state[i + 2][j] == '1') {
-                        NodePegs4 nodeDown(state);
-                        nodeDown.state[i + 1][j] = '0';
-                        nodeDown.state[i + 2][j] = '0';
-                        nodeDown.state[i][j] = '1';
-                        nodeDown.prev = this;
-                        successorSet.push_back(&nodeDown);
+                        NodePegs4* nodeDown = new NodePegs4(state);
+                        nodeDown->state[i + 1][j] = '0';
+                        nodeDown->state[i + 2][j] = '0';
+                        nodeDown->state[i][j] = '1';
+                        nodeDown->prev = this;
+                        successorSet.push_back(nodeDown);
                     }
 
                     /*check possibility to move blank right*/
                     if ((j + 2 <= 7) && state[i][j + 1] == '1' && state[i][j + 2] == '1') {
-                        NodePegs4 nodeRight(state);
-                        nodeRight.state[i][j + 1] = '0';
-                        nodeRight.state[i][j + 2] = '0';
-                        nodeRight.state[i][j] = '1';
-                        nodeRight.prev = this;
-                        successorSet.push_back(&nodeRight);
+                        NodePegs4* nodeRight = new NodePegs4(state);
+
+                        nodeRight->state[i][j + 1] = '0';
+                        nodeRight->state[i][j + 2] = '0';
+                        nodeRight->state[i][j] = '1';
+                        nodeRight->prev = this;
+                        successorSet.push_back(nodeRight);
                     }
                     /*check possibility to move blank left*/
                     if ((j - 2 >= 0) && state[i][j - 1] == '1' && state[i][j - 2] == '1') {
-                        NodePegs4 nodeLeft(state);
-                        nodeLeft.state[i][j - 1] = '0';
-                        nodeLeft.state[i][j - 2] = '0';
-                        nodeLeft.state[i][j] = '1';
-                        nodeLeft.prev = this;
-                        successorSet.push_back(&nodeLeft);
+                        NodePegs4* nodeLeft = new NodePegs4(state);
+
+                        nodeLeft->state[i][j - 1] = '0';
+                        nodeLeft->state[i][j - 2] = '0';
+                        nodeLeft->state[i][j] = '1';
+                        nodeLeft->prev = this;
+                        successorSet.push_back(nodeLeft);
                     }
                     /*check possibility to move blank up*/
                     if ((i - 2 >= 0) && state[i - 1][j] == '1' && state[i - 2][j] == '1') {
-                        NodePegs4 nodeUp(state);
-                        nodeUp.state[i - 1][j] = '0';
-                        nodeUp.state[i - 2][j] = '0';
-                        nodeUp.state[i][j] = '1';
-                        nodeUp.prev = this;
-                        successorSet.push_back(&nodeUp);
+                        NodePegs4* nodeUp = new NodePegs4(state);
+
+                        nodeUp->state[i - 1][j] = '0';
+                        nodeUp->state[i - 2][j] = '0';
+                        nodeUp->state[i][j] = '1';
+                        nodeUp->prev = this;
+                        successorSet.push_back(nodeUp);
                     }
 
                 }
@@ -155,7 +158,10 @@ public:
         ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
         while (!frontier.empty()) {
             node = frontier.front();
+            cout << endl << "THE NEW EXPANDED NODE" << endl;
             node->printState();
+            cout << "THE NEW EXPANDED NODE -- END" << endl;
+
             if(node->goalStateTest()){
                 cout << "solution found" << endl;
                 return;
@@ -163,11 +169,19 @@ public:
             frontier.pop();
             exploredSetBFS.add(node);
             vector <Node*> successors(node->successorFunction());
+            cout << endl << "THE CHILDREN NODE" << endl;
+
             for (Node* successor: successors) {
                 /*check that the sucessor is not in the frontier and explored set*/
-                if(!exploredSetBFS.exists(successor))
+
+                if(!exploredSetBFS.exists(successor)){
                     frontier.push(successor);
+                    successor->printState();
+                }
+
             }
+            cout << "THE CHILDREN NODE -- END" << endl;
+
 
         }
         cout << "failure to find the solution" << endl;
@@ -321,7 +335,7 @@ int main(int argc, char *argv[]) {
     cout << endl << endl<< endl << endl << "--------------------------------------------" << endl << endl << "    START OF SEARCH"<< endl;
     searchEngine search;
     NodePegs4 initialNode(initialStatePegs4);
-    search.DFS(&initialNode);
+    search.BFS(&initialNode);
 
 
 
