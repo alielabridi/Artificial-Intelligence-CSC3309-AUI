@@ -16,11 +16,6 @@ class Node {
     /*prev next */
 public:
     Node *prev;
-    virtual bool equals(Node* node)=0;
-    virtual void printState()=0;
-    virtual bool goalStateTest()=0;
-    virtual vector<Node*> successorFunction()=0;
-    virtual char getValueState(int i, int j)=0;
 
 };
 
@@ -29,9 +24,6 @@ class NodePegs4 : public Node {
 public:
     char state[7][7];
 
-    char getValueState(int i, int j){
-        return state[i][j];
-    }
     NodePegs4() {};
 
     NodePegs4(char state_[7][7]) {
@@ -43,10 +35,10 @@ public:
         }
     }
 
-    bool equals(Node* node){
+    bool equals(NodePegs4 node){
         for (int i = 0; i < 7; ++i) {
             for (int j = 0; j < 7; ++j) {
-                if (node->getValueState(i,j) != state[i][j])
+                if (node.state[i][j] != state[i][j])
                     return false;
             }
         }
@@ -75,12 +67,20 @@ public:
         return true;
     }
 
-    vector <Node *> successorFunction() {
-        vector <Node*> successorSet;
+    vector <NodePegs4> successorFunction() {
+        vector <NodePegs4> successorSet;
         for (int i = 0; i < 7; ++i) {
             for (int j = 0; j < 7; ++j) {
                 if (state[i][j] == '0') {
-
+                    /*check possibility to move blank up*/
+                    if ((i - 2 >= 0) && state[i - 1][j] == '1' && state[i - 2][j] == '1') {
+                        NodePegs4 nodeUp(state);
+                        nodeUp.state[i - 1][j] = '0';
+                        nodeUp.state[i - 2][j] = '0';
+                        nodeUp.state[i][j] = '1';
+                        nodeUp.prev = this;
+                        successorSet.push_back(nodeUp);
+                    }
                     /*check possibility to move blank down*/
                     if ((i + 2 <= 7) && state[i + 1][j] == '1' && state[i + 2][j] == '1') {
                         NodePegs4 nodeDown(state);
@@ -88,9 +88,8 @@ public:
                         nodeDown.state[i + 2][j] = '0';
                         nodeDown.state[i][j] = '1';
                         nodeDown.prev = this;
-                        successorSet.push_back(&nodeDown);
+                        successorSet.push_back(nodeDown);
                     }
-
                     /*check possibility to move blank right*/
                     if ((j + 2 <= 7) && state[i][j + 1] == '1' && state[i][j + 2] == '1') {
                         NodePegs4 nodeRight(state);
@@ -98,7 +97,7 @@ public:
                         nodeRight.state[i][j + 2] = '0';
                         nodeRight.state[i][j] = '1';
                         nodeRight.prev = this;
-                        successorSet.push_back(&nodeRight);
+                        successorSet.push_back(nodeRight);
                     }
                     /*check possibility to move blank left*/
                     if ((j - 2 >= 0) && state[i][j - 1] == '1' && state[i][j - 2] == '1') {
@@ -107,18 +106,8 @@ public:
                         nodeLeft.state[i][j - 2] = '0';
                         nodeLeft.state[i][j] = '1';
                         nodeLeft.prev = this;
-                        successorSet.push_back(&nodeLeft);
+                        successorSet.push_back(nodeLeft);
                     }
-                    /*check possibility to move blank up*/
-                    if ((i - 2 >= 0) && state[i - 1][j] == '1' && state[i - 2][j] == '1') {
-                        NodePegs4 nodeUp(state);
-                        nodeUp.state[i - 1][j] = '0';
-                        nodeUp.state[i - 2][j] = '0';
-                        nodeUp.state[i][j] = '1';
-                        nodeUp.prev = this;
-                        successorSet.push_back(&nodeUp);
-                    }
-
                 }
 
             }
@@ -131,11 +120,11 @@ public:
 
 class ExploredSet{
 public:
-    vector<Node *> Vec;
-    void add(Node * node){Vec.push_back(node);}
-    bool exists(Node * node){
-        for(Node * V : Vec){
-            if(V->equals(node))
+    vector<NodePegs4> Vec;
+    void add(NodePegs4 node){Vec.push_back(node);}
+    bool exists(NodePegs4 node){
+        for(NodePegs4 V : Vec){
+            if(V.equals(node))
                 return true;
         }
         return false;
@@ -144,26 +133,26 @@ public:
 
 class searchEngine {
 public:
-    void BFS(Node* initialState) {
-        if (initialState->goalStateTest()) {
+    void BFS(NodePegs4 initialState) {
+        if (initialState.goalStateTest()) {
             cout << "solution found";
             return;
         }
-        queue <Node*> frontier;
-        Node* node;
+        queue <NodePegs4> frontier;
+        NodePegs4 node;
         frontier.push(initialState);
         ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
         while (!frontier.empty()) {
             node = frontier.front();
-            node->printState();
-            if(node->goalStateTest()){
+            node.printState();
+            if(node.goalStateTest()){
                 cout << "solution found" << endl;
                 return;
             }
             frontier.pop();
             exploredSetBFS.add(node);
-            vector <Node*> successors(node->successorFunction());
-            for (Node* successor: successors) {
+            vector <NodePegs4> successors(node.successorFunction());
+            for (NodePegs4 successor: successors) {
                 /*check that the sucessor is not in the frontier and explored set*/
                 if(!exploredSetBFS.exists(successor))
                     frontier.push(successor);
@@ -175,26 +164,28 @@ public:
     }
 
 
-    void DFS(Node* initialState) {
-        if (initialState->goalStateTest()) {
+
+
+    void DFS(NodePegs4 initialState) {
+        if (initialState.goalStateTest()) {
             cout << "solution found";
             return;
         }
-        stack <Node*> frontier;
-        Node* node;
+        stack <NodePegs4> frontier;
+        NodePegs4 node;
         frontier.push(initialState);
         ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
         while (!frontier.empty()) {
             node = frontier.top();
-            node->printState();
-            if(node->goalStateTest()){
+            node.printState();
+            if(node.goalStateTest()){
                 cout << "solution found" << endl;
                 return;
             }
             frontier.pop();
             exploredSetBFS.add(node);
-            vector <Node*> successors(node->successorFunction());
-            for (Node* successor: successors) {
+            vector <NodePegs4> successors(node.successorFunction());
+            for (NodePegs4 successor: successors) {
                 /*check that the sucessor is not in the frontier and explored set*/
                 if(!exploredSetBFS.exists(successor))
                     frontier.push(successor);
@@ -204,8 +195,6 @@ public:
         cout << "failure to find the solution" << endl;
         return;
     }
-
-
 };
 
 int main(int argc, char *argv[]) {
@@ -321,7 +310,7 @@ int main(int argc, char *argv[]) {
     cout << endl << endl<< endl << endl << "--------------------------------------------" << endl << endl << "    START OF SEARCH"<< endl;
     searchEngine search;
     NodePegs4 initialNode(initialStatePegs4);
-    search.DFS(&initialNode);
+    search.DFS(initialNode);
 
 
 
