@@ -24,11 +24,7 @@ public:
     NodePegs(int size,vector<vector<char>> state_):state(size, std::vector<char>(size)) {
         this->size = size;
         /*copy matrix*/
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                state[i][j] = state_[i][j];
-            }
-        }
+        state = state_;
     }
 
     bool equals(Node* node){

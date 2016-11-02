@@ -30,9 +30,9 @@ public:
 
 
             node = frontier.front();
-            cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
+            /*cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
             node->printState();
-            cout << "THE NEW EXPANDED NODE -- END" << endl;
+            cout << "THE NEW EXPANDED NODE -- END" << endl;*/
             if(node->goalStateTest()){
                 cout << "solution found"<< n_expension << endl;
                 return;
@@ -69,11 +69,12 @@ public:
         int n_expension = 0;
         while (!frontier.empty()) {
             node = frontier.top();
-            cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
+            /*cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
             node->printState();
-            cout << "THE NEW EXPANDED NODE -- END" << endl;
+            cout << "THE NEW EXPANDED NODE -- END" << endl;*/
             if(node->goalStateTest()){
                 cout << "solution found" << endl;
+                goto solution;
                 return;
             }
             frontier.pop();
@@ -87,6 +88,14 @@ public:
 
         }
         cout << "failure to find the solution" << endl;
+        solution:
+        int steps = 0;
+        while(node != NULL){
+            node->printState();
+            node = node->prev;
+            steps++;
+        }
+        cout << "the steps are " << steps << endl;
         return;
     }
 
