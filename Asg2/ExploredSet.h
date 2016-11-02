@@ -9,13 +9,27 @@
 class ExploredSet{
 public:
     vector<Node *> Vec;
-    void add(Node * node){Vec.push_back(node);}
+    vector<Node*> Hashtable[32]; // the largest number of pegs in the game
+    void add(Node * node){
+        Hashtable[numOfPegs(node)].push_back(node);
+    }
     bool exists(Node * node){
-        for(Node * V : Vec){
+        for(Node * V : Hashtable[numOfPegs(node)]){
             if(V->equals(node))
                 return true;
         }
         return false;
+    }
+    int numOfPegs(Node *node){
+        int size = node->getSize();
+        int Pegs = 0;
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size ; ++j) {
+                if(node->getValueState(i,j) == '1')
+                    Pegs++;
+            }
+        }
+        return Pegs;
     }
 };
 

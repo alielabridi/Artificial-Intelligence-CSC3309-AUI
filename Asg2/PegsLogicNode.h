@@ -18,6 +18,7 @@ public:
     char getValueState(int i, int j){
         return state[i][j];
     }
+    int getSize(){return size;}
     NodePegs() {};
 
     NodePegs(int size,vector<vector<char>> state_):state(size, std::vector<char>(size)) {
