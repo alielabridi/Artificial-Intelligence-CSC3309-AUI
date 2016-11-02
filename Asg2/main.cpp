@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <ctime>
 
 
 #include "Node.h"
@@ -127,8 +128,15 @@ int main(int argc, char *argv[]) {
     cout << endl << endl<< endl << endl << "--------------------------------------------" << endl << endl << "    START OF SEARCH"<< endl;
     SearchEngine search;
     NodePegs initialNode(7,initialStatePegs4);
-    
-    search.BFS(&initialNode);
+
+
+    clock_t begin = clock();
+    search.DFS(&initialNode);
+
+    clock_t end = clock();
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+
+    cout << "the elapsed time to solve the problem is: " << elapsed_secs << " seconds" << endl;
 
 
 

@@ -66,9 +66,12 @@ public:
         Node* node;
         frontier.push(initialState);
         ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
+        int n_expension = 0;
         while (!frontier.empty()) {
             node = frontier.top();
+            cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
             node->printState();
+            cout << "THE NEW EXPANDED NODE -- END" << endl;
             if(node->goalStateTest()){
                 cout << "solution found" << endl;
                 return;
