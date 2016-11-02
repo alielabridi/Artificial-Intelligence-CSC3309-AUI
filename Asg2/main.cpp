@@ -1,231 +1,17 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <queue>
-#include <stack>
+
+
+#include "Node.h"
+#include "PegsLogicNode.h"
+#include "SearchEngine.h"
 
 #define VERBOSE 1
 
 using namespace std;
-/*declare goal state global as to be accesible to everyone*/
-vector<vector<char>> goalStatePegs4(7,vector<char>(7));
-
-class Node {
-    /*prev next */
-public:
-    Node *prev;
-    virtual bool equals(Node* node)=0;
-    virtual void printState()=0;
-    virtual bool goalStateTest()=0;
-    virtual vector<Node*> successorFunction()=0;
-    virtual char getValueState(int i, int j)=0;
-};
-
-/*Node object representation*/
-class NodePegs : public Node {
-public:
-    vector<vector<char>> state;
-    int size;/*represents the size of the matrix for every pegs game*/
-
-    char getValueState(int i, int j){
-        return state[i][j];
-    }
-    NodePegs() {};
-
-    NodePegs(int size,vector<vector<char>> state_):state(size, std::vector<char>(size)) {
-        this->size = size;
-        /*copy matrix*/
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                state[i][j] = state_[i][j];
-            }
-        }
-    }
-
-    bool equals(Node* node){
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                if (node->getValueState(i,j) != state[i][j])
-                    return false;
-            }
-        }
-        return true;
-    }
-    void printState() {
-        cout << "---------START--------" << endl;
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                cout << state[i][j] << " ";
-
-            }
-            cout << endl;
-        }
-        cout << "---------FINISH--------" << endl;
-
-    }
-
-    bool goalStateTest() {
-        /*to be modified for the array goalstate*/
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                if (goalStatePegs4[i][j] != state[i][j])
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    vector <Node *> successorFunction() {
-        vector <Node*> successorSet;
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                if (state[i][j] == '0') {
-
-                    /*check possibility to move blank down*/
-                    if ((i + 2 < size) && state[i + 1][j] == '1' && state[i + 2][j] == '1') {
-                        NodePegs* nodeDown = new NodePegs(size,state);
-                        nodeDown->state[i + 1][j] = '0';
-                        nodeDown->state[i + 2][j] = '0';
-                        nodeDown->state[i][j] = '1';
-                        nodeDown->prev = this;
-                        successorSet.push_back(nodeDown);
-                    }
-
-                    /*check possibility to move blank right*/
-                    if ((j + 2 < size) && state[i][j + 1] == '1' && state[i][j + 2] == '1') {
-                        NodePegs* nodeRight = new NodePegs(size,state);
-                        nodeRight->state[i][j + 1] = '0';
-                        nodeRight->state[i][j + 2] = '0';
-                        nodeRight->state[i][j] = '1';
-                        nodeRight->prev = this;
-                        successorSet.push_back(nodeRight);
-                    }
-                    /*check possibility to move blank left*/
-                    if ((j - 2 >= 0) && state[i][j - 1] == '1' && state[i][j - 2] == '1') {
-                        NodePegs* nodeLeft = new NodePegs(size,state);
-                        nodeLeft->state[i][j - 1] = '0';
-                        nodeLeft->state[i][j - 2] = '0';
-                        nodeLeft->state[i][j] = '1';
-                        nodeLeft->prev = this;
-                        successorSet.push_back(nodeLeft);
-                    }
-                    /*check possibility to move blank up*/
-                    if ((i - 2 >= 0) && state[i - 1][j] == '1' && state[i - 2][j] == '1') {
-                        NodePegs* nodeUp = new NodePegs(size,state);
-                        nodeUp->state[i - 1][j] = '0';
-                        nodeUp->state[i - 2][j] = '0';
-                        nodeUp->state[i][j] = '1';
-                        nodeUp->prev = this;
-                        successorSet.push_back(nodeUp);
-                    }
-
-                }
-
-            }
-        }
-
-        return successorSet;
-    }
-
-};
-
-class PegsTriangleNode: public NodePegs{
-    PegsTriangleNode(int size, vector< vector<char>> state_):NodePegs(size,state_){};
-    PegsTriangleNode(){};
-    /*we only need to overload the successor function for the triangle*/
-};
-
-class ExploredSet{
-public:
-    vector<Node *> Vec;
-    void add(Node * node){Vec.push_back(node);}
-    bool exists(Node * node){
-        for(Node * V : Vec){
-            if(V->equals(node))
-                return true;
-        }
-        return false;
-    }
-};
-
-class searchEngine {
-public:
-    void BFS(Node* initialState) {
-
-        if (initialState->goalStateTest()) {
-            cout << "solution found";
-            return;
-        }
-        
-
-        queue <Node*> frontier;
-        Node* node;
-        frontier.push(initialState);
-        ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
-        int n_expension = 0;
-        while (!frontier.empty()) {
-            
-
-            node = frontier.front();
-            cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
-            node->printState();
-            cout << "THE NEW EXPANDED NODE -- END" << endl;
-            if(node->goalStateTest()){
-                cout << "solution found"<< n_expension << endl;
-                return;
-            }
-            frontier.pop();
-            exploredSetBFS.add(node);
-            vector <Node*> successors(node->successorFunction());
-            //cout << endl << "THE CHILDREN NODE" << endl;
-            for (Node* successor: successors) {
-                /*check that the sucessor is not in the frontier and explored set*/
-                if(!exploredSetBFS.exists(successor)){
-                    frontier.push(successor);
-                    //successor->printState();
-                }
-            }
-            //cout << "THE CHILDREN NODE -- END" << endl;
 
 
-        }
-        cout << "failure to find the solution"<< n_expension << endl;
-        return;
-    }
-
-
-    void DFS(Node* initialState) {
-        if (initialState->goalStateTest()) {
-            cout << "solution found";
-            return;
-        }
-        stack <Node*> frontier;
-        Node* node;
-        frontier.push(initialState);
-        ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
-        while (!frontier.empty()) {
-            node = frontier.top();
-            node->printState();
-            if(node->goalStateTest()){
-                cout << "solution found" << endl;
-                return;
-            }
-            frontier.pop();
-            exploredSetBFS.add(node);
-            vector <Node*> successors(node->successorFunction());
-            for (Node* successor: successors) {
-                /*check that the sucessor is not in the frontier and explored set*/
-                if(!exploredSetBFS.exists(successor))
-                    frontier.push(successor);
-            }
-
-        }
-        cout << "failure to find the solution" << endl;
-        return;
-    }
-
-
-};
 
 int main(int argc, char *argv[]) {
     if (argc != 5){
@@ -339,7 +125,7 @@ int main(int argc, char *argv[]) {
 
 
     cout << endl << endl<< endl << endl << "--------------------------------------------" << endl << endl << "    START OF SEARCH"<< endl;
-    searchEngine search;
+    SearchEngine search;
     NodePegs initialNode(7,initialStatePegs4);
     
     search.BFS(&initialNode);
