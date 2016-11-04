@@ -8,7 +8,7 @@
 #include "PegsLogicNode.h"
 #include "SearchEngine.h"
 
-#define VERBOSE 1
+#define VERBOSE 0
 
 using namespace std;
 
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     }
 
     //char initialStatePegs4[7][7];
-    vector<vector<char>> initialStatePegs4(7,vector<char>(7));
+    vector<vector<char> > initialStatePegs4(7,vector<char>(7));
 
 
     string problem;

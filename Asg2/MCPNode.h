@@ -26,7 +26,7 @@ public:
     vector<int> travelOption4 = {1,0,1};
     vector<int> travelOption5 = {0,1,1};
 
-    vector<vector<int>> listOfTravelOptions = 
+    vector<vector<int> > listOfTravelOptions = 
     {travelOption1, travelOption2, travelOption3, travelOption4, travelOption5};
 
     MCP(){};
@@ -79,11 +79,9 @@ public:
         	{
         		vector<int> temp;
         		// Add a travel option to the current state
-        		for (int j = 0; j < state.size(); j++)
-        		{
-        			transform(state[i].begin(), state.end(),
-        				 listOfTravelOptions.begin(), back_inserter(temp), plus<int>());
-        		}
+				transform(state[i].begin(), state.end(),
+        			listOfTravelOptions.begin(), back_inserter(temp), plus<int>());
+				
         		// Check to see if the option was valid
         		for (int k = 0; k < state.size(); k++)
         		{

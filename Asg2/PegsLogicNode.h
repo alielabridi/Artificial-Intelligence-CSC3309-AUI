@@ -12,7 +12,7 @@ using namespace std;
 /*Node object representation*/
 class NodePegs : public Node {
 public:
-    vector<vector<char>> state;
+    vector<vector<char> > state;
     int size;/*represents the size of the matrix for every pegs game*/
 
     char getValueState(int i, int j){
@@ -22,7 +22,7 @@ public:
     
     NodePegs() {};
 
-    NodePegs(int size,vector<vector<char>> state_):state(size, std::vector<char>(size)) {
+    NodePegs(int size,vector<vector<char> > state_):state(size, std::vector<char>(size)) {
         this->size = size;
         /*copy matrix*/
         state = state_;
@@ -116,7 +116,7 @@ public:
 };
 
 class PegsTriangleNode: public NodePegs{
-    PegsTriangleNode(int size, vector< vector<char>> state_):NodePegs(size,state_){};
+    PegsTriangleNode(int size, vector< vector<char> > state_):NodePegs(size,state_){};
     PegsTriangleNode(){};
     /*we only need to overload the successor function for the triangle*/
 };
