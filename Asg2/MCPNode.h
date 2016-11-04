@@ -19,6 +19,15 @@ public:
         on the wrong side. */
     vector<int> state;
 
+    vector<int> travelOption1 = {2,0,1};
+    vector<int> travelOption2 = {0,2,1};
+    vector<int> travelOption3 = {1,1,1};
+    vector<int> travelOption4 = {1,0,1};
+    vector<int> travelOption5 = {0,1,1};
+
+    vector<vector<int>> listOfTravelOptions = 
+    {travelOption1, travelOption2, travelOption3, travelOption4, travelOption5};
+
     MCP(){};
 
     MCP(vector<int> state_) {
@@ -34,8 +43,8 @@ public:
 
     void printState(){
         cout << "State: < ";
-        for (vector<int>::iterator iter=state.begin(); iter!=state.end(); ++iter)
-    		cout << ' ' << *iter;
+        for (int i = 0; i < state.size; i++)
+    		cout << state[i] << ",";
         cout << ">" << endl;
     }
 
@@ -62,6 +71,11 @@ public:
         if(state[2] == 0)
         {
         	// Next states will be generated from vector addition
+        	// Move boat, n missionaries, and n cannibal to the non goal side of river
+        	vector<vector<int>> successorPotentials;
+        	
+        	for (i)
+
 
         }
         else	// Boat is on the goal side of the river
