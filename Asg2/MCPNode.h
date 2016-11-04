@@ -7,7 +7,8 @@
 
 #include <iostream>
 #include <vector>
-#include <functional>
+#include <functional>	// for plus
+#include <algorithm> // for transform
 #include "Node.h"
 using namespace std;
 
@@ -43,7 +44,7 @@ public:
 
     void printState(){
         cout << "State: < ";
-        for (int i = 0; i < state.size; i++)
+        for (int i = 0; i < state.size(); i++)
     		cout << state[i] << ",";
         cout << ">" << endl;
     }
@@ -74,7 +75,22 @@ public:
         	// Move boat, n missionaries, and n cannibal to the non goal side of river
         	vector<vector<int>> successorPotentials;
         	
-        	for (i)
+        	for (int i = 0; i < listOfTravelOptions.size(); i++)
+        	{
+        		vector<int> temp;
+        		// Add a travel option to the current state
+        		for (int j = 0; j < state.size(); j++)
+        		{
+        			transform(state[i].begin(), state.end(),
+        				 listOfTravelOptions.begin(), back_inserter(temp), plus<int>());
+        		}
+        		// Check to see if the option was valid
+        		for (int k = 0; k < state.size(); k++)
+        		{
+
+        		}
+
+        	}
 
 
         }
