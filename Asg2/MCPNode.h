@@ -30,22 +30,11 @@ public:
 
     MCP(){};
 
-    MCP(vector<int> state_) {
-        // copy input state to object state
-        // just use = ? 
-        state = newvector(state_);
-    }
+    MCP(vector<int> state_):state(state_);
 
-    int getSize(){return size;}
-
-    // cannot exactly implement this function
-    char getValueState(int i, int j){
-        return state[i][j];
-    }
 
     bool equals (Node* node){
-        if (this.state == node->state)
-			return true;
+			return (this.state == dynamic_cast<NodeMCP*>(node)->state);
     }
 
     void printState(){
@@ -56,11 +45,9 @@ public:
     }
 
     bool goalStateTest (){  // could be pretty wrong. Idk where we are storing the goal state 
-        for (int i = 0; i > 3; i++){
-            if (state[i] != goalStateMCP[i]){
+        for (int i = 0; i < 3; i++)
+            if (state[i] != goalStateMCP[i])
                 return false;
-            }
-        }
         return true;
     }
 
