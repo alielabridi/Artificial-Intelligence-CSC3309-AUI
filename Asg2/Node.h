@@ -8,7 +8,8 @@
 #include <vector>
 using namespace std;
 /*declare goal state global as to be accesible to everyone*/
-vector<vector<char> > goalStatePegs4(7,vector<char>(7));
+vector<vector<char> > goalStatePegs(9,vector<char>(9));
+vector<int> goalStateMCP(3);
 class Node {
     /*prev next */
 public:
