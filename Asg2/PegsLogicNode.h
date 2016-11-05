@@ -13,7 +13,7 @@ using namespace std;
 class NodePegs : public Node {
 public:
     vector<vector<char> > state;
-    int size;/*represents the size of the matrix for every pegs game*/
+    int size;
 
     char getValueState(int i, int j){
         return state[i][j];
@@ -47,8 +47,8 @@ public:
             cout << endl;
         }
         cout << "---------FINISH--------" << endl;
-
     }
+
 
     bool goalStateTest() {
         /*to be modified for the array goalstate*/
