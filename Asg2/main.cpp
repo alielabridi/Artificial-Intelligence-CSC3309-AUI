@@ -72,15 +72,18 @@ int main(int argc, char *argv[]) {
     /*end of inputting the problemSpec file*/
 
 
-    if (problem == "Pegs" && pegs_shape == 4) {
+    if (problem == "Pegs" ) {
+        int size;
+        if(pegs_shape == 5) size = 9;
+        else if(pegs_shape == 4) size = 7;
         /*inputting the initialstate*/
         ifstream initialStateStream("TextFiles/" + string(argv[2]) + ".txt"); //InitialStatePegs4.txt
         if (!initialStateStream.is_open()) {
             cout << "could not open initial state file";
             return 0;
         }
-        for (int i = 0; i < 7; ++i) {
-            for (int j = 0; j < 7; ++j) {
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
                 initialStateStream >> initialStatePegs4[i][j];
 
             }
@@ -93,8 +96,8 @@ int main(int argc, char *argv[]) {
             cout << "could not open goal state file";
             return 0;
         }
-        for (int i = 0; i < 7; ++i) {
-            for (int j = 0; j < 7; ++j) {
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
                 goalStateStream >> goalStatePegs4[i][j];
 
             }
@@ -104,16 +107,16 @@ int main(int argc, char *argv[]) {
         if (VERBOSE) {
             /*print the content of the goal state and initial state*/
             cout << "Content of the initialState pegs 4" << endl;
-            for (int i = 0; i < 7; ++i) {
-                for (int j = 0; j < 7; ++j) {
+            for (int i = 0; i < size; ++i) {
+                for (int j = 0; j < size; ++j) {
                     cout << initialStatePegs4[i][j] << " ";
 
                 }
                 cout << endl;
             }
             cout << "Content of the goalState pegs 4" << endl;
-            for (int i = 0; i < 7; ++i) {
-                for (int j = 0; j < 7; ++j) {
+            for (int i = 0; i < size; ++i) {
+                for (int j = 0; j < size; ++j) {
                     cout << goalStatePegs4[i][j] << " ";
 
                 }
@@ -122,21 +125,19 @@ int main(int argc, char *argv[]) {
 
         }
 
-    }
-
-
     cout << endl << endl<< endl << endl << "--------------------------------------------" << endl << endl << "    START OF SEARCH"<< endl;
     SearchEngine search;
-    NodePegs initialNode(7,initialStatePegs4);
+    NodePegs initialNode(size,initialStatePegs4);
 
+        clock_t begin = clock();
+        search.DFS(&initialNode);
 
-    clock_t begin = clock();
-    search.DFS(&initialNode);
+        clock_t end = clock();
+        double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
-    clock_t end = clock();
-    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+        cout << "the elapsed time to solve the problem is: " << elapsed_secs << " seconds" << endl;
+    }
 
-    cout << "the elapsed time to solve the problem is: " << elapsed_secs << " seconds" << endl;
 
 
 

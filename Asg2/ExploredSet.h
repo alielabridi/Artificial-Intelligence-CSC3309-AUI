@@ -9,7 +9,8 @@
 class ExploredSet{
 public:
     vector<Node *> Vec;
-    vector<Node*> Hashtable[32]; // the largest number of pegs in all games
+    vector<Node*> Hashtable[81]; // the largest number of pegs in all games
+
     void add(Node * node){
         Hashtable[numOfPegs(node)].push_back(node);
     }

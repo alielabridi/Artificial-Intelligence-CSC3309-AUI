@@ -13,7 +13,7 @@
 
 class SearchEngine {
 public:
-    void BFS(Node* initialState) {
+    /*void BFS(Node* initialState) {
 
         if (initialState->goalStateTest()) {
             cout << "solution found";
@@ -24,29 +24,34 @@ public:
         queue <Node*> frontier;
         Node* node;
         frontier.push(initialState);
-        ExploredSet exploredSetBFS;/*to be later transofrmed to a hashtable*/
+        ExploredSet exploredSetBFS;*//*to be later transofrmed to a hashtable*//*
         int n_expension = 0;
         while (!frontier.empty()) {
 
 
             node = frontier.front();
-            /*cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
+            *//*cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
             node->printState();
-            cout << "THE NEW EXPANDED NODE -- END" << endl;*/
+            cout << "THE NEW EXPANDED NODE -- END" << endl;*//*
             if(node->goalStateTest()){
                 cout << "solution found"<< n_expension << endl;
                 return;
             }
+            cout << "it went here1 " << endl;
+
             frontier.pop();
             exploredSetBFS.add(node);
+            cout << "it went here2" << endl;
+
             vector <Node*> successors(node->successorFunction());
             //cout << endl << "THE CHILDREN NODE" << endl;
             for (Node* successor: successors) {
-                /*check that the sucessor is not in the frontier and explored set*/
+                *//*check that the sucessor is not in the frontier and explored set*//*
                 if(!exploredSetBFS.exists(successor)){
                     frontier.push(successor);
                     //successor->printState();
                 }
+                cout << "it went here3 " << endl;
             }
             //cout << "THE CHILDREN NODE -- END" << endl;
 
@@ -54,7 +59,7 @@ public:
         }
         cout << "failure to find the solution"<< n_expension << endl;
         return;
-    }
+    }*/
 
 
     void DFS(Node* initialState) {
@@ -69,9 +74,10 @@ public:
         int n_expension = 0;
         while (!frontier.empty()) {
             node = frontier.top();
-            /*cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
+            cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
             node->printState();
-            cout << "THE NEW EXPANDED NODE -- END" << endl;*/
+            cout << "THE NEW EXPANDED NODE -- END" << endl;
+
             if(node->goalStateTest()){
                 cout << "solution found" << endl;
                 goto solution;
@@ -79,17 +85,23 @@ public:
             }
             frontier.pop();
             exploredSetBFS.add(node);
+
             vector <Node*> successors(node->successorFunction());
+
             for (Node* successor: successors) {
                 /*check that the sucessor is not in the frontier and explored set*/
+
                 if(!exploredSetBFS.exists(successor))
                     frontier.push(successor);
+
             }
+
 
         }
         cout << "failure to find the solution" << endl;
         solution:
         int steps = 0;
+        cout << "path cost to reach solution " << node->pathcode << endl;
         while(node != NULL){
             node->printState();
             node = node->prev;

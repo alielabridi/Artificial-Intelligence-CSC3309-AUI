@@ -14,6 +14,7 @@ class NodePegs : public Node {
 public:
     vector<vector<char>> state;
     int size;/*represents the size of the matrix for every pegs game*/
+    int HeuristicValue =0; /*based on the total number of moves possible in a given state*/
 
     char getValueState(int i, int j){
         return state[i][j];
@@ -25,6 +26,30 @@ public:
         this->size = size;
         /*copy matrix*/
         state = state_;
+        //std::cout << "Capacity: " << state.capacity () << "and size needed is " << size << std::endl;
+        HeuristicValue = totalPossibleMovesHeuristic();
+
+    }
+
+    int stepCost(int move){
+        /*returns the step cost for every move
+         * 1 => down
+         * 2 =>right
+         * 2 => left
+         * 3 => up
+         * */
+        switch(move){
+            case 1:
+                return 1;
+            case 2:
+                return 1;
+            case 3:
+                return 1;
+            case 4:
+                return 1;
+            default:
+                return 0;
+        }
     }
 
     bool equals(Node* node){
@@ -60,6 +85,36 @@ public:
         return true;
     }
 
+    int totalPossibleMovesHeuristic(){
+        int count = 0;
+        for (int i = 0; i < size ; ++i) {
+            for (int j = 0; j < size ; ++j) {
+                if (state[i][j] == '1') {
+
+                    /*check possibility to move blank down*/
+                    if ((i + 2 < size) && state[i + 1][j] == '1' && state[i + 2][j] == '0') {
+                        count++;
+                    }
+
+                    /*check possibility to move blank right*/
+                    if ((j + 2 < size) && state[i][j + 1] == '1' && state[i][j + 2] == '0') {
+                        count++;
+                    }
+                    /*check possibility to move blank left*/
+                    if ((j - 2 >= 0) && state[i][j - 1] == '1' && state[i][j - 2] == '0') {
+                        count++;
+                    }
+                    /*check possibility to move blank up*/
+                    if ((i - 2 >= 0) && state[i - 1][j] == '1' && state[i - 2][j] == '0') {
+                        count++;
+                    }
+
+                }
+            }
+        }
+        return count;
+    }
+
     vector <Node *> successorFunction() {
         vector <Node*> successorSet;
         for (int i = 0; i < size; ++i) {
@@ -73,6 +128,7 @@ public:
                         nodeDown->state[i + 2][j] = '0';
                         nodeDown->state[i][j] = '1';
                         nodeDown->prev = this;
+                        nodeDown->pathcode = pathcode + stepCost(1);
                         successorSet.push_back(nodeDown);
                     }
 
@@ -83,6 +139,7 @@ public:
                         nodeRight->state[i][j + 2] = '0';
                         nodeRight->state[i][j] = '1';
                         nodeRight->prev = this;
+                        nodeRight->pathcode = pathcode + stepCost(2);
                         successorSet.push_back(nodeRight);
                     }
                     /*check possibility to move blank left*/
@@ -92,6 +149,7 @@ public:
                         nodeLeft->state[i][j - 2] = '0';
                         nodeLeft->state[i][j] = '1';
                         nodeLeft->prev = this;
+                        nodeLeft->pathcode = pathcode +  stepCost(3);
                         successorSet.push_back(nodeLeft);
                     }
                     /*check possibility to move blank up*/
@@ -101,6 +159,7 @@ public:
                         nodeUp->state[i - 2][j] = '0';
                         nodeUp->state[i][j] = '1';
                         nodeUp->prev = this;
+                        nodeUp->pathcode = pathcode +  stepCost(4);
                         successorSet.push_back(nodeUp);
                     }
 
