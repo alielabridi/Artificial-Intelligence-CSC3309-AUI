@@ -19,7 +19,7 @@ public:
     virtual int getSize()=0;
     virtual bool goalStateTest()=0;
     virtual vector<Node*> successorFunction()=0;
-    virtual char getValueState(int i, int j)=0;
+    virtual char getValueState(int i, int j);
     virtual int stepCost(int move)=0;
 };
 
