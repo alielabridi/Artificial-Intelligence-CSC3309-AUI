@@ -32,7 +32,7 @@ public:
 
     NodeMCP(){};
 
-    NodeMCP(vector<int> state_):state(state_){};
+    NodeMCP(vector<int> state_):state(state_){};    // Change to set the heuristic cost
 
 
     bool equals (Node* node){
@@ -46,11 +46,30 @@ public:
         cout << ">" << endl;
     }
 
-    bool goalStateTest (){  // could be pretty wrong. Idk where we are storing the goal state 
+    bool goalStateTest (){  // link back to main
         for (int i = 0; i < 3; i++)
             if (state[i] != goalStateMCP[i])
                 return false;
         return true;
+    }
+
+    int numberOnStartSideHeuristic() {
+        int hCost = 0;
+        bool boatOnStartSide;
+        for (i = 0; i < state.size() - 1; i++){
+            hCost += state[i];
+        }
+
+        // if boat on start side, the cost is less
+        // cost will be around double the number of people on the start side
+        if(state[i] = 1){
+            hCost *= 2;
+        } else {
+            hCost *= 2;
+            hCost++;
+        }
+
+        return hCost;
     }
 
     vector <Node* > successorFunction(){
@@ -77,7 +96,7 @@ public:
 				
         		// Check to see if the option was valid
                 // See if #M and #C exceeded the original values
-                if(temp[0] <= initialMissionaryNum && temp[1] <= initialCannibalNum) {
+                if(temp[0] <= initialMissionaryNum && temp[1] <= initialCannibalNum) {  // tie back to main
                     // If #C do not outnumber #M on the initial side
                     if(state[1] <= state[0]){
                         // Add temp to the list of
@@ -95,7 +114,7 @@ public:
         	for (int i = 0; i < listOfTravelOptions.size(); i++)
             {
                 vector<int> temp;
-                // Vector subtraction - subtract a travel option to the current state
+                // Vector subtraction - subtract a travel option from the current state
                 // Attempt to move to the goal side of the river
                 for (int j = 0; j < state.size(); j++)
                     temp[j] = listOfTravelOptions[i][j] - state[j];
@@ -103,7 +122,7 @@ public:
                 // Check to see if the option was in bounds
                 if(temp[0] >= 0 && temp[1] >= 0){
                     // If #C do not outnumber #M on the Goal side 
-                    if((initialCannibalNum - state[1]) <= (initialMissionaryNum - state[0]))
+                    if((initialCannibalNum - state[1]) <= (initialMissionaryNum - state[0]))    // tie back to main
                     {
                         // Add temp to the list of
                         NodeMCP* newNode = new NodeMCP(temp);
