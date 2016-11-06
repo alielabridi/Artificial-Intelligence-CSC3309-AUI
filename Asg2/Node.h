@@ -14,10 +14,12 @@ class Node {
     /*prev next */
 public:
     Node *prev;
+    int pathcode = 0;
     virtual bool equals(Node* node)=0;
     virtual void printState()=0;
     virtual bool goalStateTest()=0;
     virtual vector<Node*> successorFunction()=0;
+    virtual int stepCost(int move)=0;
 };
 
 #endif //ASG2_NODE_H
