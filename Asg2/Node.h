@@ -8,18 +8,20 @@
 #include <vector>
 using namespace std;
 /*declare goal state global as to be accesible to everyone*/
-vector<vector<char>> goalStatePegs4(7,vector<char>(7));
+vector<vector<char> > goalStatePegs(9,vector<char>(9));
+vector<int> goalStateMCP(3);
+
 class Node {
     /*prev next */
 public:
-    Node *prev;
+    Node *prev = NULL;
     int pathcode = 0;
+    int HeuristicValue =0; /*based on the total number of moves possible in a given state*/
+
     virtual bool equals(Node* node)=0;
     virtual void printState()=0;
-    virtual int getSize()=0;
     virtual bool goalStateTest()=0;
     virtual vector<Node*> successorFunction()=0;
-    virtual char getValueState(int i, int j);
     virtual int stepCost(int move)=0;
 };
 

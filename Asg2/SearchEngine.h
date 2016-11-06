@@ -8,8 +8,23 @@
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <vector>
 #include "ExploredSet.h"
 #include "Node.h"
+
+struct GreedyComparator{
+public:
+    bool operator()(const Node* lhs, const Node* rhs) const{
+        return (lhs->HeuristicValue < rhs->HeuristicValue);
+    }
+};
+struct AStarComparator{
+public:
+    bool operator()(const Node* lhs, const Node* rhs) const{
+        return ((lhs->HeuristicValue+lhs->pathcode) < (rhs->HeuristicValue+rhs->pathcode));
+    }
+};
+
 
 class SearchEngine {
 public:
@@ -108,6 +123,96 @@ public:
             steps++;
         }
         cout << "the steps are " << steps << endl;
+        return;
+    }
+
+
+
+
+    void Greedy(Node* initialState) {
+
+    if (initialState->goalStateTest()) {
+        cout << "solution found";
+        return;
+    }
+
+    priority_queue<Node*, vector<Node*>,GreedyComparator> frontier;
+    Node* node;
+    frontier.push(initialState);
+    ExploredSet exploredSetBFS;
+        int n_expension = 0;
+        while (!frontier.empty()) {
+
+
+            node = frontier.top();
+            cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
+            node->printState();
+            cout << "THE NEW EXPANDED NODE -- END" << endl;
+            if(node->goalStateTest()){
+                cout << "solution found"<< n_expension << endl;
+                return;
+            }
+
+            frontier.pop();
+            exploredSetBFS.add(node);
+
+            vector <Node*> successors(node->successorFunction());
+            //cout << endl << "THE CHILDREN NODE" << endl;
+            for (Node* successor: successors) {
+                //check that the sucessor is not in the frontier and explored set
+                if(!exploredSetBFS.exists(successor)){
+                    frontier.push(successor);
+                    //successor->printState();
+                }
+            }
+            //cout << "THE CHILDREN NODE -- END" << endl;
+
+
+        }
+        cout << "failure to find the solution"<< n_expension << endl;
+        return;
+    }
+
+
+    void AStar(Node* initialState) {
+
+        if (initialState->goalStateTest()) {
+            cout << "solution found";
+            return;
+        }
+
+        priority_queue<Node*, vector<Node*>,AStarComparator> frontier;
+        Node* node;
+        frontier.push(initialState);
+        ExploredSet exploredSetBFS;
+        int n_expension = 0;
+        while (!frontier.empty()) {
+
+
+            node = frontier.top();
+            cout << endl << "THE NEW EXPANDED NODE " << ++n_expension << endl;
+            node->printState();
+            cout << "THE NEW EXPANDED NODE -- END" << endl;
+            if(node->goalStateTest()){
+                return;
+            }
+            frontier.pop();
+            exploredSetBFS.add(node);
+
+            vector <Node*> successors(node->successorFunction());
+            //cout << endl << "THE CHILDREN NODE" << endl;
+            for (Node* successor: successors) {
+                //check that the sucessor is not in the frontier and explored set
+                if(!exploredSetBFS.exists(successor)){
+                    frontier.push(successor);
+                    //successor->printState();
+                }
+            }
+            //cout << "THE CHILDREN NODE -- END" << endl;
+
+
+        }
+        cout << "failure to find the solution"<< n_expension << endl;
         return;
     }
 
