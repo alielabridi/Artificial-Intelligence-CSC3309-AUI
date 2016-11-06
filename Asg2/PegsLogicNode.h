@@ -263,7 +263,7 @@ public:
                         successorSet.push_back(nodeUpRight);
                     }
                     /*check the possibility to move blank Down and Left */
-                    if ((i + 2 < size) && (j - 2 >= 0) && state[i + 1][j-1] == '1' && state[i + 2][j+2] == '1') {
+                    if ((i + 2 < size) && (j - 2 >= 0) && state[i + 1][j-1] == '1' && state[i + 2][j-2] == '1') {
                         NodePegs* nodeDownLeft = new NodePegs(size,state);
                         nodeDownLeft->state[i + 1][j-1] = '0';
                         nodeDownLeft->state[i + 2][j-2] = '0';
